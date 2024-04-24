@@ -31,7 +31,7 @@ public class UserTests{
     }
 
     @Test
-    void checkAvatarAndIdTest() {
+    public void checkAvatarAndIdTest() {
         Specifications.installSpecifications(Specifications.requestSpec(url),Specifications.responseSpecOK200());
         List<UserData> users= given()
                 .when()
@@ -53,5 +53,10 @@ public class UserTests{
         for(int i=0; i< avatars.size(); i++){
             Assertions.assertTrue(avatars.get(i).contains(ids.get(i)));
         }
+    }
+
+    @Test
+    public void successRegTest() {
+
     }
 }
