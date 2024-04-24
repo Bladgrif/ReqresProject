@@ -2,6 +2,8 @@ package com.reqres.api.tests;
 
 import com.reqres.api.config.ApiConfig;
 import com.reqres.api.models.UserData;
+import com.reqres.api.utils.Specifications;
+import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -13,13 +15,15 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.hasSize;
 
-public class UserTests extends ApiConfig {
+public class UserTests{
+
+    private final static String url = "https://reqres.in/api/";
 
     @Test
     void testGetUsers() {
         given()
                 .when()
-                .get("users?page=2")
+                .get(url + "users?page=2")
                 .then()
                 .statusCode(200)
                 .assertThat()
@@ -28,12 +32,12 @@ public class UserTests extends ApiConfig {
 
     @Test
     void checkAvatarAndIdTest() {
+        Specifications.installSpecifications(Specifications.requestSpec(url),Specifications.responseSpecOK200());
         List<UserData> users= given()
                 .when()
-                .contentType(ContentType.JSON)
+//                .contentType(ContentType.JSON)
                 .get("users?page=2")
-                .then()
-                .log().all()
+                .then().log().all()
                 .extract().body().jsonPath().getList("data", UserData.class);
 
         for (UserData u : users) {
